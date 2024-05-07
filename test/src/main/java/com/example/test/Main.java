@@ -1,17 +1,41 @@
 package com.example.test;
 
+import java.io.*;
+import java.util.*;
+
 public class Main {
 	public static void main(String[] args) {
-		Circle circle = new Circle(35.5);
-		System.out.println("Initialized circle with radius 35.5:");
-		System.out.println("Diameter: " + circle.getDiameter());
-		System.out.println("Area: " + (double)Math.round(circle.getArea() * 1000) / 1000);
-		System.out.println("Circumference: " + (double)Math.round(circle.getCircumference() * 1000) / 1000);
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter your name: ");
+		String accountHolderName = scanner.nextLine();
+		System.out.println("Enter your initial balance: ");
+		double initialBalance = scanner.nextDouble();
 
-		circle.setRadius(40.3);
-		System.out.println("\n\nSet radius to 40.3:");
-		System.out.println("New Diameter: " + circle.getDiameter());
-		System.out.println("New Area: " + (double)Math.round(circle.getArea() * 1000) / 1000);
-		System.out.println("New Circumference: " + (double)Math.round(circle.getCircumference() * 1000) / 1000);
+		BankAccount account = new BankAccount(accountHolderName, initialBalance);
+
+		while (true) {
+			System.out.println("Would you like to make a deposit (1), withdraw (2), or exit (3)?");
+			int choice = scanner.nextInt();
+			if (choice == 3) {
+				break;
+			}
+
+			if (choice != 1 && choice != 2) {
+				System.out.println("Invalid choice");
+				continue;
+			}
+
+			if (choice == 1) {
+				System.out.println("Enter the amount you want to deposit: ");
+				double depositAmount = scanner.nextDouble();
+				account.deposit(depositAmount);
+				System.out.println("The balance of " + account.name + "'s account is: $" + account.balance);
+			} else if (choice == 2) {
+				System.out.println("Enter the amount you want to withdraw: ");
+				double withdrawAmount = scanner.nextDouble();
+				account.withdraw(withdrawAmount);
+				System.out.println("The balance of " + account.name + "'s account is: $" + account.balance);
+			}
+		}
 	}
 }
