@@ -6,36 +6,20 @@ import java.util.*;
 public class Main {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter your name: ");
-		String accountHolderName = scanner.nextLine();
-		System.out.println("Enter your initial balance: ");
-		double initialBalance = scanner.nextDouble();
+		
+		System.out.print("Enter fuel efficiency (kmpl): ");
+		double kmpl = scanner.nextDouble();
 
-		BankAccount account = new BankAccount(accountHolderName, initialBalance);
+		Automobile myBmw = new Automobile(kmpl);
 
-		while (true) {
-			System.out.println("Would you like to make a deposit (1), withdraw (2), or exit (3)?");
-			int choice = scanner.nextInt();
-			if (choice == 3) {
-				break;
-			}
+		System.out.print("Enter how much fuel to put in the tank (litres): ");
+		double litres = scanner.nextDouble();
+		myBmw.fillUp(litres);
 
-			if (choice != 1 && choice != 2) {
-				System.out.println("Invalid choice");
-				continue;
-			}
+		System.out.print("Enter how far you want to drive (kilometers): ");
+		double kilometers = scanner.nextDouble();
+		myBmw.takeTrip(kilometers);
 
-			if (choice == 1) {
-				System.out.println("Enter the amount you want to deposit: ");
-				double depositAmount = scanner.nextDouble();
-				account.deposit(depositAmount);
-				System.out.println("The balance of " + account.name + "'s account is: $" + account.balance);
-			} else if (choice == 2) {
-				System.out.println("Enter the amount you want to withdraw: ");
-				double withdrawAmount = scanner.nextDouble();
-				account.withdraw(withdrawAmount);
-				System.out.println("The balance of " + account.name + "'s account is: $" + account.balance);
-			}
-		}
+		System.out.println("Remaining fuel: " + ((double)Math.round(myBmw.reportFuel() * 100) / 100) + " litres. Fuel used for the trip: " + ((double)Math.round(myBmw.reportTripFuelUsage() * 100) / 100) + " litres.");
 	}
 }
