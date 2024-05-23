@@ -11,29 +11,50 @@ class Main {
 		System.out.print("Enter a math string\n"); //Prints text that asks the user for a math problem/math string
 		String s = sc.nextLine(); //States that the variable "s" will be what ever is inputted by the user
 
-		if (
-			(s.charAt(0) != '+') && (s.charAt(0) != '-')
-		) s = "+" + s; //An if statement looking at the first character of s and seeing if it is equal to a + or - sign //If there is no + or - sign at the begining of the string then it will add an addition symbol to the begining
-
 		Scanner sc1 = new Scanner(s); //Sets up a new scanner called "sc1" whihc will scan s
-		// sc1.useDelimiter("\\s+\\+\\s+|\\s+\\-\\s+"); //searches the input from sc1 for an addition symbol with any combination of spaces around it as well as a subtraction symbol with any combination of spaces around it
-		String regex = "((?:\\+|-)\\d+|\\d+)(?:\\s*(-|\\+))?";
-        sc1.findAll(Pattern.compile(regex)).forEach(m -> {
-            System.out.print(m.group(1));
-            if (m.group(2) != null) {
-                System.out.print(" " + m.group(2));
-            }
-            System.out.print(" ");
-        });
+		String regex = "((?:\\+|-)\\d+|\\d+)(?:\\s*(-|\\+))?"; // Sets up a regex pattern that will be used to find the numbers and operators in the math string
+		String numberRegex = "((?:\\+|-)\\d+|\\d+)|((?:-\s*-\\d+))"; // Sets up a regex pattern that will be used to find the numbers in the math string
+		final StringBuilder equation = new StringBuilder(); // Creates a string builder so that we can build the equation using the lambda operation below
 
-		int sum = 0; //Sets the variable "sum" to equal 0
 
-		while (sc1.hasNextInt()) { // While loop that will run so long as there is an integer in the input
-			int n = sc1.nextInt(); //Sets the variable "n" to the next integer in the input
-			System.out.println("Added " + n + " to " + sum + " to get " + (sum + n));
-			sum += n; //Adds the next integer in the input to the sum
-		}
+		sc1.findAll(Pattern.compile(regex)).forEach(match -> { // Uses the regex pattern to find all the numbers and operators in the math string and build the equation
+			equation.append(match.group(1));
+			if (match.group(2) != null) {
+				equation.append(" " + match.group(2));
+			}
+			equation.append(" ");
+		});
 
-		
+		String equationString = equation.toString().strip(); // Converts the equation to a string and removes any leading or trailing white spaces
+
+
+		final int sum[] = {0}; // Creates an array that will store the sum of the math string - this allows us to change the value of the sum in the lambda operation below
+		final StringBuilder sumSteps = new StringBuilder(); // Creates a string builder so that we can build the sum steps using the lambda operation below
+		Scanner sc2 = new Scanner(s); // Initiate new scanner to scan the math string
+		sc2.findAll(Pattern.compile(numberRegex)).forEach(match -> { // Uses the regex pattern to find all the numbers in the math string and calculate the sum
+			String numberString = match.group().strip();
+			if (numberString.startsWith("--")) { // If the operation is subtraction of a negative number, it will be converted to addition
+				numberString = numberString.substring(2);
+			} else if (numberString.startsWith("- -")) { // If the operation is subtraction of a negative number, it will be converted to addition
+				numberString = numberString.substring(3);
+			} else {
+				numberString = match.group();
+			}
+			int number = Integer.parseInt(numberString);
+
+			if (number < 0) { // Add the sum steps to the string builder
+				// sumSteps.append("\tSubtracted " + Math.abs(number) + " from " + sum[0] + " to get " + (sum[0] + number) + "\n");
+				sumSteps.append("\t" + sum[0] + " - " + Math.abs(number) + " = " + (sum[0] + number) + "\n");
+			} else {
+				// sumSteps.append("\tAdded " + number + " to " + sum[0] + " to get " + (sum[0] + number) + "\n");
+				sumSteps.append("\t" + sum[0] + " + " + number + " = " + (sum[0] + number) + "\n");
+			}
+
+			sum[0] += number; // Add the number to the sum
+		});
+
+		System.out.println("\n\n\tEquation:\t" + equationString + " = " + sum[0]); // Print the equation and the sum
+		System.out.println("\nSum broken down: ");
+		System.out.println(sumSteps.toString()); // Print the sum steps
 	}
 }
