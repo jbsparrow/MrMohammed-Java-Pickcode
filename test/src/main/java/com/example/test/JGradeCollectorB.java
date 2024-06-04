@@ -4,15 +4,11 @@ import java.io.*;
 import java.util.*;
 
 public class JGradeCollectorB {
-    private static final String Joutput_fileB = "./JPCI.txt";
     public static Integer JstudentsB;
     private static Integer JcutoffB;
     private static Map<String, Integer[]> JstudentDataArrayB = new Hashtable<String, Integer[]>();
 
-    public JGradeCollectorB() throws IOException {
-        FileWriter JfwB = new FileWriter(Joutput_fileB);
-        PrintWriter JoutputB = new PrintWriter(JfwB);
-
+    public JGradeCollectorB() {
         Scanner JinputB = new Scanner(System.in);
         System.out.print("How many students would you like to input? ");
         if (!JinputB.hasNextInt()) {
@@ -68,18 +64,6 @@ public class JGradeCollectorB {
             JstudentDataArrayB.put(JnameB, JgradesB);
         }
 
-        for (Map.Entry<String, Integer[]> JentryB : JstudentDataArrayB.entrySet()) {
-            JoutputB.print(JentryB.getKey() + ": ");
-            for (int JkB = 0; JkB < 6; JkB++) {
-                JoutputB.print(JentryB.getValue()[JkB] + " ");
-            }
-            JoutputB.println();
-        }
-
-
-
-        JoutputB.close();
-        JfwB.close();
         JinputB.close();
     }
 
