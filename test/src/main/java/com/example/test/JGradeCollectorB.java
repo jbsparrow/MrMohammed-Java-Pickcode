@@ -6,6 +6,8 @@ import java.util.*;
 public class JGradeCollectorB {
     private static final String Joutput_fileB = "./JPCI.txt";
     public static Integer JstudentsB;
+    private static Integer JcutoffB;
+    private static Map<String, Integer[]> JstudentDataArrayB = new Hashtable<String, Integer[]>();
 
     public JGradeCollectorB() throws IOException {
         FileWriter JfwB = new FileWriter(Joutput_fileB);
@@ -23,7 +25,17 @@ public class JGradeCollectorB {
             System.exit(1);
         }
 
-        JstudentDataArrayB JstudentDataArrayB = new JstudentDataArrayB(JstudentsB);
+        System.out.print("What is the cutoff for the program being applied to? (50-100): ");
+        if (!JinputB.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a number.");
+            System.exit(1);
+        }
+        JcutoffB = JinputB.nextInt();
+        if (JcutoffB < 50 || JcutoffB > 100) {
+            System.out.println("Invalid cutoff. Please enter a number between 50 and 100.");
+            System.exit(1);
+        }
+
 
         for (int JiB = 0; JiB < JstudentsB; JiB++) {
             System.out.print("Enter student name: ");
@@ -38,7 +50,7 @@ public class JGradeCollectorB {
             for (int JjB = 0; JjB < 6; JjB++) {
                 JtempGradeB = JinputB.nextInt();
                 if (JtempGradeB < 0 || JtempGradeB > 100) {
-                    System.out.println("Invalid grade. Please enter a grade between 0 and 100.");
+                    System.out.println("Invalid grade. Please enter a grade between 50 and 100.");
                     System.exit(1);
                 } else if(JtempGradeB < 50) {
                     System.out.println("Student " + JnameB + " has failed a course.");
@@ -53,7 +65,15 @@ public class JGradeCollectorB {
             }
             // Sort the grades in descending order
             Arrays.sort(JgradesB, Collections.reverseOrder());
-            System.out.println("Student " + JnameB + " has the following grades: " + Arrays.toString(JgradesB));
+            JstudentDataArrayB.put(JnameB, JgradesB);
+        }
+
+        for (Map.Entry<String, Integer[]> JentryB : JstudentDataArrayB.entrySet()) {
+            JoutputB.print(JentryB.getKey() + ": ");
+            for (int JkB = 0; JkB < 6; JkB++) {
+                JoutputB.print(JentryB.getValue()[JkB] + " ");
+            }
+            JoutputB.println();
         }
 
 
@@ -61,5 +81,13 @@ public class JGradeCollectorB {
         JoutputB.close();
         JfwB.close();
         JinputB.close();
+    }
+
+    public Map<String, Integer[]> getStudentDataArray() {
+        return JstudentDataArrayB;
+    }
+
+    public Integer getCutoff() {
+        return JcutoffB;
     }
 }
