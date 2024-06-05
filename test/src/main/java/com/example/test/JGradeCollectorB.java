@@ -1,6 +1,5 @@
 package com.example.test;
 
-import java.io.*;
 import java.util.*;
 
 public class JGradeCollectorB {
@@ -67,11 +66,11 @@ public class JGradeCollectorB {
         JinputB.close();
     }
 
-    public Map<String, Integer[]> getStudentDataArray() {
+    public Map<String, Integer[]> JgetStudentDataArrayB() {
         return JstudentDataArrayB;
     }
 
-    public Integer getCutoff() {
+    public Integer JgetCutoffB() {
         return JcutoffB;
     }
 }

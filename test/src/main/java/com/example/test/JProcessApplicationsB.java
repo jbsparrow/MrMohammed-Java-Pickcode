@@ -22,20 +22,11 @@ public class JProcessApplicationsB {
         "Database Management"
     };
     private static Map<String, Integer> JstudentDataAveragesB = new Hashtable<String, Integer>();
-    private static Integer cutoff;
+    private static Integer JcutoffB;
 
-    public JProcessApplicationsB(Map<String, Integer[]> JstudentDataArrayB, Integer cutoff) throws IOException {
-        JProcessApplicationsB.cutoff = cutoff;
-        FileWriter JfwB = new FileWriter(Joutput_fileB);
-        PrintWriter JoutputB = new PrintWriter(JfwB);
 
-        for (Map.Entry<String, Integer[]> JentryB : JstudentDataArrayB.entrySet()) {
-            System.out.print(JentryB.getKey() + ": ");
-            for (int JkB = 0; JkB < 6; JkB++) {
-                System.out.print(JentryB.getValue()[JkB] + " ");
-            }
-            System.out.println();
-        }
+    public JProcessApplicationsB(Map<String, Integer[]> JstudentDataArrayB, Integer JcutoffB) {
+        JProcessApplicationsB.JcutoffB = JcutoffB;
 
         for (Map.Entry<String, Integer[]> JentryB : JstudentDataArrayB.entrySet()) {
             Integer JaverageB = 0;
@@ -46,17 +37,53 @@ public class JProcessApplicationsB {
             JstudentDataAveragesB.put(JentryB.getKey(), JaverageB);
         }
 
+        // Sort the student data averages in descending order
+        Map<Integer, String> JtempStudentDataAveragesB = new Hashtable<Integer, String>();
+        for (Map.Entry<String, Integer> JentryB : JstudentDataAveragesB.entrySet()) {
+            JtempStudentDataAveragesB.put(JentryB.getValue(), JentryB.getKey());
+        }
+
+        Integer[] JaverageGradesB = JstudentDataAveragesB.values().toArray(new Integer[0]);
+        Arrays.sort(JaverageGradesB, Collections.reverseOrder());
+
+        JstudentDataAveragesB.clear();
+        for (Integer JaverageB : JaverageGradesB) {
+            JstudentDataAveragesB.put(JtempStudentDataAveragesB.get(JaverageB), JaverageB);
+        }
+
+        for (Map.Entry<String, Integer> JentryB : JstudentDataAveragesB.entrySet()) {
+            System.out.println(JentryB.getKey() + ": " + JentryB.getValue());
+        }
+    }
+
+    public void JclearUniversityResponsesB() {
+        File JfolderB = new File(Juniversity_response_folderB);
+        File[] JfilesB = JfolderB.listFiles();
+        if (JfilesB != null) {
+            for (File JfileB : JfilesB) {
+                JfileB.delete();
+            }
+        }
+    }
+
+    public void JwriteStudentAveragesB() throws IOException {
+        FileWriter JfwB = new FileWriter(Joutput_fileB);
+        PrintWriter JoutputB = new PrintWriter(JfwB);
+
         for (Map.Entry<String, Integer> JentryB : JstudentDataAveragesB.entrySet()) {
             JoutputB.println(JentryB.getKey() + ": " + JentryB.getValue());
+            System.out.println(JentryB.getKey() + ": " + JentryB.getValue());
         }
 
         JoutputB.close();
         JfwB.close();
+    }
 
+    public void JwriteUniversityResponsesB() throws IOException {
         for (Map.Entry<String, Integer> JentryB : JstudentDataAveragesB.entrySet()) {
-            File Juniversity_response_fileB = new File(Juniversity_response_folderB + JentryB.getKey() + ".md");
-            FileWriter Jfw2B = new FileWriter(Juniversity_response_fileB);
+            FileWriter Jfw2B = new FileWriter(Juniversity_response_folderB + JentryB.getKey() + ".md");
             PrintWriter Joutput2B = new PrintWriter(Jfw2B);
+
             Random JrandomB = new Random();
             String Juniversity_programB = Juniversity_programsB[JrandomB.nextInt(Juniversity_programsB.length)];
             String Jalternate_university_programB = Jalternate_university_programsB[JrandomB.nextInt(Jalternate_university_programsB.length)];
@@ -66,19 +93,19 @@ public class JProcessApplicationsB {
             Joutput2B.println("Dear " + JentryB.getKey() + ",\n\n");
 
 
-            if (JentryB.getValue() >= cutoff + 10) {
+            if (JentryB.getValue() >= JProcessApplicationsB.JcutoffB + 5) {
                 // Accepted
                 Joutput2B.println("We are pleased to inform you that you have been accepted into the <b>" + Juniversity_programB + "</b> program at Barr University. Your academic achievements, extracurricular involvement, and passion for computer science have impressed our admissions committee.\n\n");
                 Joutput2B.println("We are excited to welcome you to our university community. Please review the enclosed materials for information on next steps, including important deadlines and orientation details.\n\n");
                 Joutput2B.println("Congratulations and welcome to Barr University!\n\n");
                 Joutput2B.println("Sincerely,\n\nJacob Barr\nDirector of Admissions\nBarr University");
-            } else if (JentryB.getValue() >= cutoff) {
+            } else if (JentryB.getValue() >= JProcessApplicationsB.JcutoffB) {
                 // Waitlisted
                 Joutput2B.println("Thank you for your application to the <b>" + Juniversity_programB + "</b> program at Barr University. We are writing to inform you that your application has been placed on our waitlist.\n\n");
                 Joutput2B.println("This year's admissions process has been highly competitive, and while we cannot offer you admission at this moment, we see great potential in your application. Should a spot become available, we will notify you immediately.\n\n");
                 Joutput2B.println("We appreciate your patience and understanding.\n\n");
                 Joutput2B.println("Sincerely,\n\nJacob Barr\nDirector of Admissions\nBarr University");
-            } else if (JentryB.getValue() >= cutoff - 10) {
+            } else if (JentryB.getValue() >= JProcessApplicationsB.JcutoffB - 5) {
                 // Alternate Offer
                 Joutput2B.println("Thank you for your application to the <b>" + Juniversity_programB + "</b> program at Barr University. While we are unable to offer you a spot in this program at this time, we are pleased to extend an alternate offer for admission to the <b>" + Jalternate_university_programB + "</b> program.\n\n");
                 Joutput2B.println("We believe that your skills and interests align well with this program and that you will find it equally fulfilling. Please review the enclosed materials for more information on this opportunity.\n\n");
