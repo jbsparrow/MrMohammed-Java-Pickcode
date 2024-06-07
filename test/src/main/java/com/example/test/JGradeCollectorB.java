@@ -1,6 +1,8 @@
 package com.example.test;
 
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Scanner;
 
 public class JGradeCollectorB {
     public Integer JstudentsB;
