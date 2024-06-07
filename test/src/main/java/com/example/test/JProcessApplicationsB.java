@@ -78,6 +78,9 @@ public class JProcessApplicationsB {
 
     public void JclearUniversityResponsesB() {
         File JfolderB = new File(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB);
+        if (!JfolderB.exists()) {
+            JfolderB.mkdir();
+        }
         File[] JfilesB = JfolderB.listFiles();
         if (JfilesB != null) {
             for (File JfileB : JfilesB) {
