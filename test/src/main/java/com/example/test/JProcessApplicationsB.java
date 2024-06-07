@@ -38,20 +38,30 @@ public class JProcessApplicationsB {
         }
 
         // Sort the student data averages in descending order
-        Map<Integer, String> JtempStudentDataAveragesB = new Hashtable<Integer, String>();
+        Map<Integer, String> JinvertedStudentDataAveragesB = new Hashtable<Integer, String>();
         for (Map.Entry<String, Integer> JentryB : JstudentDataAveragesB.entrySet()) {
-            JtempStudentDataAveragesB.put(JentryB.getValue(), JentryB.getKey());
+            JinvertedStudentDataAveragesB.put(JentryB.getValue(), JentryB.getKey());
         }
 
         Integer[] JaverageGradesB = JstudentDataAveragesB.values().toArray(new Integer[0]);
+        System.out.println(JaverageGradesB.toString());
         Arrays.sort(JaverageGradesB, Collections.reverseOrder());
+        System.out.println(JaverageGradesB.toString());
 
         JstudentDataAveragesB.clear();
+        Map<String, Integer> JccccaverageB = new Hashtable<String, Integer>();
         for (Integer JaverageB : JaverageGradesB) {
-            JstudentDataAveragesB.put(JtempStudentDataAveragesB.get(JaverageB), JaverageB);
+            System.out.println(JaverageB);
+            JccccaverageB.put(JinvertedStudentDataAveragesB.get(JaverageB), JaverageB);
         }
 
-        for (Map.Entry<String, Integer> JentryB : JstudentDataAveragesB.entrySet()) {
+        for (Integer JaverageB : JaverageGradesB) {
+            System.out.println(JccccaverageB.get(JaverageB));
+        }
+
+        System.out.println("Student Data Averages:");
+
+        for (Map.Entry<String, Integer> JentryB : JccccaverageB.entrySet()) {
             System.out.println(JentryB.getKey() + ": " + JentryB.getValue());
         }
     }
