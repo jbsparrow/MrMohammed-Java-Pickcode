@@ -3,9 +3,9 @@ package com.example.test;
 import java.util.*;
 
 public class JGradeCollectorB {
-    public static Integer JstudentsB;
-    private static Integer JcutoffB;
-    private static Map<String, Integer[]> JstudentDataArrayB = new Hashtable<String, Integer[]>();
+    public Integer JstudentsB;
+    private Integer JcutoffB;
+    private Map<String, Integer[]> JstudentDataArrayB = new Hashtable<String, Integer[]>();
 
     public JGradeCollectorB() {
         Scanner JinputB = new Scanner(System.in);
@@ -14,8 +14,8 @@ public class JGradeCollectorB {
             System.out.println("Invalid input. Please enter a number.");
             System.exit(1);
         }
-        JstudentsB = JinputB.nextInt();
-        if (JstudentsB < 1) {
+        this.JstudentsB = JinputB.nextInt();
+        if (this.JstudentsB < 1) {
             System.out.println("Invalid number of students. Please enter a number greater than 0.");
             System.exit(1);
         }
@@ -25,14 +25,14 @@ public class JGradeCollectorB {
             System.out.println("Invalid input. Please enter a number.");
             System.exit(1);
         }
-        JcutoffB = JinputB.nextInt();
-        if (JcutoffB < 50 || JcutoffB > 100) {
+        this.JcutoffB = JinputB.nextInt();
+        if (this.JcutoffB < 50 || this.JcutoffB > 100) {
             System.out.println("Invalid cutoff. Please enter a number between 50 and 100.");
             System.exit(1);
         }
 
 
-        for (int JiB = 0; JiB < JstudentsB; JiB++) {
+        for (int JiB = 0; JiB < this.JstudentsB; JiB++) {
             System.out.print("Enter student name: ");
             while (JinputB.hasNextInt()) {
                 JinputB.nextLine();
@@ -54,23 +54,23 @@ public class JGradeCollectorB {
                     JgradesB[JjB] = JtempGradeB;
                 }
             }
+
             if (JgradesB.length != 6) {
                 System.out.println("Invalid number of grades for student " + JnameB + ". Please enter six grades.");
                 System.exit(1);
             }
-            // Sort the grades in descending order
-            Arrays.sort(JgradesB, Collections.reverseOrder());
-            JstudentDataArrayB.put(JnameB, JgradesB);
+
+            this.JstudentDataArrayB.put(JnameB, JgradesB);
         }
 
         JinputB.close();
     }
 
     public Map<String, Integer[]> JgetStudentDataArrayB() {
-        return JstudentDataArrayB;
+        return this.JstudentDataArrayB;
     }
 
     public Integer JgetCutoffB() {
-        return JcutoffB;
+        return this.JcutoffB;
     }
 }
