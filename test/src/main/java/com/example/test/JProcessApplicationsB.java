@@ -129,27 +129,6 @@ public class JProcessApplicationsB {
         System.out.println("Student averages have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_AVERAGE_FILEB + "\033[0m.");
     }
 
-    public void JwriteStudentStatusesB() throws IOException { // Write student statuses to file
-        FileWriter Jfw3B = new FileWriter(JProcessApplicationsB.JSTUDENT_STATUS_FILEB);
-        PrintWriter Joutput3B = new PrintWriter(Jfw3B);
-
-        // Write file header
-        Joutput3B.println("# Student Statuses\n");
-
-        // Write markdown table headers
-        Joutput3B.println("| Student Name | Status |");
-        Joutput3B.println("|--------------|--------|");
-        for (String JstudentB : this.JstudentNamesB) { //  Write statuses to the markdown table in the sort order of the student name file.
-            Joutput3B.println("| " + JstudentB + " | " + this.JstudentStatusesB.get(JstudentB) + " |");
-        }
-
-        Joutput3B.close();
-        Jfw3B.close();
-
-        // Notify user that student statuses have been written to the selected file
-        System.out.println("Student statuses have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_STATUS_FILEB + "\033[0m.");
-    }
-
     public void JwriteUniversityResponsesB() throws IOException { // Write university responses to files
         for (Map.Entry<String, Integer> JentryB : this.JstudentDataAveragesB.entrySet()) { // Iterate through student averages
             FileWriter Jfw2B = new FileWriter(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".md");
@@ -203,5 +182,26 @@ public class JProcessApplicationsB {
 
         // Notify user that university response letters have been written to the selected folder
         System.out.println("University response letters have been written to the \033[3m" + JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + "\033[0m folder.");
+    }
+
+    public void JwriteStudentStatusesB() throws IOException { // Write student statuses to file
+        FileWriter Jfw3B = new FileWriter(JProcessApplicationsB.JSTUDENT_STATUS_FILEB);
+        PrintWriter Joutput3B = new PrintWriter(Jfw3B);
+
+        // Write file header
+        Joutput3B.println("# Student Statuses\n");
+
+        // Write markdown table headers
+        Joutput3B.println("| Student Name | Status |");
+        Joutput3B.println("|--------------|--------|");
+        for (String JstudentB : this.JstudentNamesB) { //  Write statuses to the markdown table in the sort order of the student name file.
+            Joutput3B.println("| " + JstudentB + " | " + this.JstudentStatusesB.get(JstudentB) + " |");
+        }
+
+        Joutput3B.close();
+        Jfw3B.close();
+
+        // Notify user that student statuses have been written to the selected file
+        System.out.println("Student statuses have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_STATUS_FILEB + "\033[0m.");
     }
 }
