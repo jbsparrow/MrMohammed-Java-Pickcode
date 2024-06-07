@@ -13,19 +13,19 @@ import java.util.Random;
 
 public class JProcessApplicationsB {
     // Define static variables
-    private static final String JSTUDENT_AVERAGE_FILEB = "./JPCI.txt";
-    private static final String JSTUDENT_STATUS_FILEB = "./OUAC.md"; // Markdown file
-    private static final String JUNIVERSITY_RESPONSE_FOLDERB = "./University Responses/";
+    private static final String JSTUDENT_AVERAGE_FILEB = "./JPCI.txt"; // File to write student averages to - plain text
+    private static final String JSTUDENT_STATUS_FILEB = "./OUAC.md"; // File to write acceptance statuses to - markdown format
+    private static final String JUNIVERSITY_RESPONSE_FOLDERB = "./University Responses/"; // Folder to write university responses to - responses are written to markdown files
     private static final String JSORT_METHODB = "ALPHABETICAL"; // "AVERAGE" or "ALPHABETICAL"
     private static final String JSORT_ORDERB = "ASCENDING"; // "ASCENDING" or "DESCENDING"
-    private static final String[] JUNIVERSITY_PROGRAMSB = {
+    private static final String[] JUNIVERSITY_PROGRAMSB = { // Programs to offer admission to
         "Computer Science (Honours)",
         "Software Engineering (Co-op)",
         "Artificial Intelligence and Machine Learning (Honours)",
         "Cybersecurity (Honours)",
         "Data Science and Analytics (Co-op)"
     };
-    private static final String[] JALTERNATE_UNIVERSITY_PROGRAMSB = {
+    private static final String[] JALTERNATE_UNIVERSITY_PROGRAMSB = { // Programs to offer alternate admission to
         "Information Technology",
         "Web Development and Design",
         "Game Design and Development",
@@ -34,62 +34,64 @@ public class JProcessApplicationsB {
     };
 
     // Define instance variables
-    private Map<String, Integer> JstudentDataAveragesB = new Hashtable<String, Integer>();
-    private String[] JstudentNamesB;
-    private Map<Integer, String> JinvertedStudentDataAveragesB = new Hashtable<Integer, String>();
-    private Integer[] JstudentGradesB;
-    private Integer JcutoffB;
-    private Map<String, String> JstudentStatusesB = new Hashtable<String, String>();
+    private Map<String, Integer> JstudentDataAveragesB = new Hashtable<String, Integer>(); // Map to store student averages
+    private String[] JstudentNamesB; // Array to store student names
+    private Map<Integer, String> JinvertedStudentDataAveragesB = new Hashtable<Integer, String>(); // Map to store inverted student averages
+    private Integer[] JstudentGradesB; // Array to store student grades
+    private Integer JcutoffB; // Cutoff for program admission
+    private Map<String, String> JstudentStatusesB = new Hashtable<String, String>(); // Map to store student admission statuses
 
 
-    public JProcessApplicationsB(Map<String, Integer[]> JstudentDataArrayB, Integer JcutoffB) {
-        this.JcutoffB = JcutoffB;
+    public JProcessApplicationsB(Map<String, Integer[]> JstudentDataB, Integer JcutoffB) {
+        this.JcutoffB = JcutoffB; // Set cutoff for program admission based on input
 
-        for (Map.Entry<String, Integer[]> JentryB : JstudentDataArrayB.entrySet()) {
+        for (Map.Entry<String, Integer[]> JentryB : JstudentDataB.entrySet()) { // Calculate student averages
             Integer JaverageB = 0;
-            for (int JkB = 0; JkB < 6; JkB++) {
-                JaverageB += JentryB.getValue()[JkB];
+            for (Integer JgradeB : JentryB.getValue()) {
+                JaverageB += JgradeB;
             }
             JaverageB /= 6;
-            this.JstudentDataAveragesB.put(JentryB.getKey(), JaverageB);
+            this.JstudentDataAveragesB.put(JentryB.getKey(), JaverageB); // Store student averages in map
         }
 
-        this.JstudentNamesB = this.JstudentDataAveragesB.keySet().toArray(new String[0]);
-        switch (JProcessApplicationsB.JSORT_ORDERB) {
+        this.JstudentNamesB = this.JstudentDataAveragesB.keySet().toArray(new String[0]); // Get student names from hashmap and store in array
+        switch (JProcessApplicationsB.JSORT_ORDERB) { // Sort student names based on the selected sort order
             case "ASCENDING":
                 Arrays.sort(this.JstudentNamesB);
                 break;
             case "DESCENDING":
                 Arrays.sort(this.JstudentNamesB, Collections.reverseOrder());
                 break;
-            default:
+            default: // Exit if an invalid sort order is selected
                 System.out.println("Invalid sort order. Please enter 'ASCENDING' or 'DESCENDING'.");
                 System.exit(1);
         }
 
-        for (String JnameB : this.JstudentNamesB) {
+        for (String JnameB : this.JstudentNamesB) { // Invert the student averages map to allow for sorting by average
             this.JinvertedStudentDataAveragesB.put(this.JstudentDataAveragesB.get(JnameB), JnameB);
         }
 
-        this.JstudentGradesB = this.JstudentDataAveragesB.values().toArray(new Integer[0]);
-        switch (JProcessApplicationsB.JSORT_ORDERB) {
+        this.JstudentGradesB = this.JstudentDataAveragesB.values().toArray(new Integer[0]); // Get student averages from hashmap and store in array
+        switch (JProcessApplicationsB.JSORT_ORDERB) { // Sort student averages based on the selected sort order
             case "ASCENDING":
                 Arrays.sort(this.JstudentGradesB);
                 break;
             case "DESCENDING":
                 Arrays.sort(this.JstudentGradesB, Collections.reverseOrder());
                 break;
-            default:
+            default: // Exit if an invalid sort order is selected
                 System.out.println("Invalid sort order. Please enter 'ASCENDING' or 'DESCENDING'.");
                 System.exit(1);
         }
     }
 
-    public void JclearUniversityResponsesB() {
+    public void JclearUniversityResponsesB() { // Clear existing university response files
         File JfolderB = new File(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB);
-        if (!JfolderB.exists()) {
+        if (!JfolderB.exists()) { // Create folder if it does not exist
             JfolderB.mkdir();
         }
+
+        // Iterate through all files in the folder and delete them
         File[] JfilesB = JfolderB.listFiles();
         if (JfilesB != null) {
             for (File JfileB : JfilesB) {
@@ -98,11 +100,11 @@ public class JProcessApplicationsB {
         }
     }
 
-    public void JwriteStudentAveragesB() throws IOException {
+    public void JwriteStudentAveragesB() throws IOException { // Write student averages to file
         FileWriter JfwB = new FileWriter(JProcessApplicationsB.JSTUDENT_AVERAGE_FILEB);
         PrintWriter JoutputB = new PrintWriter(JfwB);
 
-        switch (JProcessApplicationsB.JSORT_METHODB) {
+        switch (JProcessApplicationsB.JSORT_METHODB) { // Write student averages based on the selected sort method
             case "AVERAGE":
                 for (Integer JgradeB : this.JstudentGradesB) {
                     JoutputB.println(this.JinvertedStudentDataAveragesB.get(JgradeB) + ": " + JgradeB);
@@ -115,7 +117,7 @@ public class JProcessApplicationsB {
                 }
                 break;
 
-            default:
+            default: // Exit if an invalid sort method is selected
                 System.out.println("Invalid sort method. Please enter 'AVERAGE' or 'ALPHABETICAL'.");
                 System.exit(1);
         }
@@ -123,23 +125,48 @@ public class JProcessApplicationsB {
         JoutputB.close();
         JfwB.close();
 
+        // Notify user that student averages have been written to the selected file
         System.out.println("Student averages have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_AVERAGE_FILEB + "\033[0m.");
     }
 
-    public void JwriteUniversityResponsesB() throws IOException {
-        for (Map.Entry<String, Integer> JentryB : this.JstudentDataAveragesB.entrySet()) {
+    public void JwriteStudentStatusesB() throws IOException { // Write student statuses to file
+        FileWriter Jfw3B = new FileWriter(JProcessApplicationsB.JSTUDENT_STATUS_FILEB);
+        PrintWriter Joutput3B = new PrintWriter(Jfw3B);
+
+        // Write file header
+        Joutput3B.println("# Student Statuses\n");
+
+        // Write markdown table headers
+        Joutput3B.println("| Student Name | Status |");
+        Joutput3B.println("|--------------|--------|");
+        for (String JstudentB : this.JstudentNamesB) { //  Write statuses to the markdown table in the sort order of the student name file.
+            Joutput3B.println("| " + JstudentB + " | " + this.JstudentStatusesB.get(JstudentB) + " |");
+        }
+
+        Joutput3B.close();
+        Jfw3B.close();
+
+        // Notify user that student statuses have been written to the selected file
+        System.out.println("Student statuses have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_STATUS_FILEB + "\033[0m.");
+    }
+
+    public void JwriteUniversityResponsesB() throws IOException { // Write university responses to files
+        for (Map.Entry<String, Integer> JentryB : this.JstudentDataAveragesB.entrySet()) { // Iterate through student averages
             FileWriter Jfw2B = new FileWriter(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".md");
             PrintWriter Joutput2B = new PrintWriter(Jfw2B);
 
+            // Create random object to select random program names
             Random JrandomB = new Random();
             String Juniversity_programB = JProcessApplicationsB.JUNIVERSITY_PROGRAMSB[JrandomB.nextInt(JProcessApplicationsB.JUNIVERSITY_PROGRAMSB.length)];
             String Jalternate_university_programB = JProcessApplicationsB.JALTERNATE_UNIVERSITY_PROGRAMSB[JrandomB.nextInt(JProcessApplicationsB.JALTERNATE_UNIVERSITY_PROGRAMSB.length)];
 
+            // Write university response letter headers
             Joutput2B.println("# Barr University\n");
             Joutput2B.println("## Office of Admissions\n");
             Joutput2B.println("Dear " + JentryB.getKey() + ",\n\n");
 
 
+            // Write university response letters based on student averages, cutoff, and random program selection, and add student status to hashmap
             if (JentryB.getValue() >= this.JcutoffB + 5) {
                 // Accepted
                 Joutput2B.println("We are pleased to inform you that you have been accepted into the <b>" + Juniversity_programB + "</b> program at Barr University. Your academic achievements, extracurricular involvement, and passion for computer science have impressed our admissions committee.\n\n");
@@ -174,26 +201,7 @@ public class JProcessApplicationsB {
             Jfw2B.close();
         }
 
+        // Notify user that university response letters have been written to the selected folder
         System.out.println("University response letters have been written to the \033[3m" + JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + "\033[0m folder.");
-    }
-
-    public void JwriteStudentStatusesB() throws IOException {
-        FileWriter Jfw3B = new FileWriter(JProcessApplicationsB.JSTUDENT_STATUS_FILEB);
-        PrintWriter Joutput3B = new PrintWriter(Jfw3B);
-
-        // Write student names and statuses to file as a markdown table.
-
-        Joutput3B.println("# Student Statuses\n");
-
-        Joutput3B.println("| Student Name | Status |");
-        Joutput3B.println("|--------------|--------|");
-        for (String JstudentB : this.JstudentNamesB) {
-            Joutput3B.println("| " + JstudentB + " | " + this.JstudentStatusesB.get(JstudentB) + " |");
-        }
-
-        Joutput3B.close();
-        Jfw3B.close();
-
-        System.out.println("Student statuses have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_STATUS_FILEB + "\033[0m.");
     }
 }
