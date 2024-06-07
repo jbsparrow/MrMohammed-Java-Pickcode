@@ -9,5 +9,6 @@ class JMainB {
 		J_ProcessApplications_B.JclearUniversityResponsesB();
 		J_ProcessApplications_B.JwriteStudentAveragesB();
 		J_ProcessApplications_B.JwriteUniversityResponsesB();
+		J_ProcessApplications_B.JwriteStudentStatusesB();
 	}
 }

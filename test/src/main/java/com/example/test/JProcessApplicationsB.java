@@ -6,7 +6,8 @@ import java.util.*;
 
 public class JProcessApplicationsB {
     // Define static variables
-    private static final String JOUTPUT_FILEB = "./JPCI.txt";
+    private static final String JSTUDENT_AVERAGE_FILEB = "./JPCI.txt";
+    private static final String JSTUDENT_STATUS_FILEB = "./Statuses.md";
     private static final String JUNIVERSITY_RESPONSE_FOLDERB = "./University Responses/";
     private static final String JSORT_METHODB = "ALPHABETICAL"; // "AVERAGE" or "ALPHABETICAL"
     private static final String JSORT_ORDERB = "ASCENDING"; // "ASCENDING" or "DESCENDING"
@@ -31,6 +32,7 @@ public class JProcessApplicationsB {
     private Map<Integer, String> JinvertedStudentDataAveragesB = new Hashtable<Integer, String>();
     private Integer[] JstudentGradesB;
     private Integer JcutoffB;
+    private Map<String, String> JstudentStatusesB = new Hashtable<String, String>();
 
 
     public JProcessApplicationsB(Map<String, Integer[]> JstudentDataArrayB, Integer JcutoffB) {
@@ -90,7 +92,7 @@ public class JProcessApplicationsB {
     }
 
     public void JwriteStudentAveragesB() throws IOException {
-        FileWriter JfwB = new FileWriter(JProcessApplicationsB.JOUTPUT_FILEB);
+        FileWriter JfwB = new FileWriter(JProcessApplicationsB.JSTUDENT_AVERAGE_FILEB);
         PrintWriter JoutputB = new PrintWriter(JfwB);
 
         switch (JProcessApplicationsB.JSORT_METHODB) {
@@ -114,7 +116,7 @@ public class JProcessApplicationsB {
         JoutputB.close();
         JfwB.close();
 
-        System.out.println("Student averages have been written to \033[3m" + JProcessApplicationsB.JOUTPUT_FILEB + "\033[0m.");
+        System.out.println("Student averages have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_AVERAGE_FILEB + "\033[0m.");
     }
 
     public void JwriteUniversityResponsesB() throws IOException {
@@ -137,24 +139,28 @@ public class JProcessApplicationsB {
                 Joutput2B.println("We are excited to welcome you to our university community. Please review the enclosed materials for information on next steps, including important deadlines and orientation details.\n\n");
                 Joutput2B.println("Congratulations and welcome to Barr University!\n\n");
                 Joutput2B.println("Sincerely,\n\nJacob Barr\nDirector of Admissions\nBarr University");
+                this.JstudentStatusesB.put(JentryB.getKey(), "Accepted");
             } else if (JentryB.getValue() >= this.JcutoffB) {
                 // Waitlisted
                 Joutput2B.println("Thank you for your application to the <b>" + Juniversity_programB + "</b> program at Barr University. We are writing to inform you that your application has been placed on our waitlist.\n\n");
                 Joutput2B.println("This year's admissions process has been highly competitive, and while we cannot offer you admission at this moment, we see great potential in your application. Should a spot become available, we will notify you immediately.\n\n");
                 Joutput2B.println("We appreciate your patience and understanding.\n\n");
                 Joutput2B.println("Sincerely,\n\nJacob Barr\nDirector of Admissions\nBarr University");
+                this.JstudentStatusesB.put(JentryB.getKey(), "Waitlisted");
             } else if (JentryB.getValue() >= this.JcutoffB - 5) {
                 // Alternate Offer
                 Joutput2B.println("Thank you for your application to the <b>" + Juniversity_programB + "</b> program at Barr University. While we are unable to offer you a spot in this program at this time, we are pleased to extend an alternate offer for admission to the <b>" + Jalternate_university_programB + "</b> program.\n\n");
                 Joutput2B.println("We believe that your skills and interests align well with this program and that you will find it equally fulfilling. Please review the enclosed materials for more information on this opportunity.\n\n");
                 Joutput2B.println("We look forward to the possibility of welcoming you to Barr University.\n\n");
                 Joutput2B.println("Sincerely,\n\nJacob Barr\nDirector of Admissions\nBarr University");
+                this.JstudentStatusesB.put(JentryB.getKey(), "Alternate Offer");
             } else {
                 // Rejected
                 Joutput2B.println("Thank you for your application to the <b>" + Juniversity_programB + "</b> program at Barr University. After careful consideration, we regret to inform you that we are unable to offer you admission at this time.\n\n");
                 Joutput2B.println("The admissions process is highly competitive, and we receive many applications from talented individuals. We encourage you to continue pursuing your academic and professional goals.\n\n");
                 Joutput2B.println("We wish you all the best in your future endeavors.\n\n");
                 Joutput2B.println("Sincerely,\n\nJacob Barr\nDirector of Admissions\nBarr University");
+                this.JstudentStatusesB.put(JentryB.getKey(), "Rejected");
             }
 
             Joutput2B.close();
@@ -162,5 +168,25 @@ public class JProcessApplicationsB {
         }
 
         System.out.println("University response letters have been written to the \033[3m" + JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + "\033[0m folder.");
+    }
+
+    public void JwriteStudentStatusesB() throws IOException {
+        FileWriter Jfw3B = new FileWriter(JProcessApplicationsB.JSTUDENT_STATUS_FILEB);
+        PrintWriter Joutput3B = new PrintWriter(Jfw3B);
+
+        // Write student names and statuses to file as a markdown table.
+
+        Joutput3B.println("# Student Statuses\n");
+
+        Joutput3B.println("| Student Name | Status |");
+        Joutput3B.println("|--------------|--------|");
+        for (String JstudentB : this.JstudentNamesB) {
+            Joutput3B.println("| " + JstudentB + " | " + this.JstudentStatusesB.get(JstudentB) + " |");
+        }
+
+        Joutput3B.close();
+        Jfw3B.close();
+
+        System.out.println("Student statuses have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_STATUS_FILEB + "\033[0m.");
     }
 }
