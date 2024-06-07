@@ -7,7 +7,7 @@ import java.util.*;
 public class JProcessApplicationsB {
     // Define static variables
     private static final String JSTUDENT_AVERAGE_FILEB = "./JPCI.txt";
-    private static final String JSTUDENT_STATUS_FILEB = "./Statuses.md";
+    private static final String JSTUDENT_STATUS_FILEB = "./OUAC.md"; // Markdown file
     private static final String JUNIVERSITY_RESPONSE_FOLDERB = "./University Responses/";
     private static final String JSORT_METHODB = "ALPHABETICAL"; // "AVERAGE" or "ALPHABETICAL"
     private static final String JSORT_ORDERB = "ASCENDING"; // "ASCENDING" or "DESCENDING"
