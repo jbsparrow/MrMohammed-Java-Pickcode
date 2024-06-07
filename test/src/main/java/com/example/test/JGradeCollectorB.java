@@ -1,10 +1,16 @@
 package com.example.test;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Scanner;
 
 public class JGradeCollectorB {
+    // Define static variables
+    private static final String JSTUDENT_DATA_FILEB = "JPCI.txt"; // File to write student data to
+
     // Define instance variables
     public Integer JstudentsB;
     private Integer JcutoffB; // Cutoff for the program being applied to
@@ -75,5 +81,20 @@ public class JGradeCollectorB {
 
     public Integer JgetCutoffB() {
         return this.JcutoffB; // Return cutoff for the program being applied to
+    }
+
+    public void JwriteStudentDataB() throws IOException { // Write student data to file
+        FileWriter JfileWriterB = new FileWriter(JSTUDENT_DATA_FILEB); // Create new file writer
+        PrintWriter JprintWriterB = new PrintWriter(JfileWriterB); // Create new print writer
+
+        for (Map.Entry<String, Integer[]> JentryB : this.JstudentDataB.entrySet()) { // Iterate through each student
+            JprintWriterB.print(JentryB.getKey() + ": "); // Write student name to file
+            for (Integer JgradeB : JentryB.getValue()) { // Iterate through each grade
+                JprintWriterB.print(JgradeB + " "); // Write grade to file
+            }
+            JprintWriterB.println(); // Move to next line
+        }
+
+        JprintWriterB.close(); // Close print writer
     }
 }
