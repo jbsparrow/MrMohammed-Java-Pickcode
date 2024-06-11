@@ -9,7 +9,9 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
-import com.aspose.words.*;
+
+import com.aspose.words.Document;
+import com.aspose.words.SaveFormat;
 
 
 public class JProcessApplicationsB {
@@ -101,7 +103,7 @@ public class JProcessApplicationsB {
     }
 
 
-    public void JwriteUniversityResponsesB() throws IOException, Exception { // Write university responses to files
+    public void JwriteUniversityResponsesB() throws IOException { // Write university responses to files
         for (Map.Entry<String, Integer> JentryB : this.JstudentDataAveragesB.entrySet()) { // Iterate through student averages
             FileWriter Jfw2B = new FileWriter(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".md");
             PrintWriter Joutput2B = new PrintWriter(Jfw2B);
@@ -151,20 +153,24 @@ public class JProcessApplicationsB {
             Joutput2B.close();
             Jfw2B.close();
 
-            // Convert markdown file to PDF
-            Document JuniversityResponseB = new Document(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".md");
-            JuniversityResponseB.save(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".pdf", SaveFormat.PDF);
+            try {
+                // Convert markdown file to PDF
+                Document JuniversityResponseB = new Document(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".md");
+                JuniversityResponseB.save(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".pdf", SaveFormat.PDF);
 
-            // Delete markdown file
-            File JfileB = new File(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".md");
-            JfileB.delete();
+                // Delete markdown file
+                File JfileB = new File(JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + JentryB.getKey() + ".md");
+                JfileB.delete();
+            } catch (Exception e) {
+                System.out.println("Error converting university responses to PDF.");
+            }
         }
 
         // Notify user that university response letters have been written to the selected folder
         System.out.println("University response letters have been written to the \033[3m" + JProcessApplicationsB.JUNIVERSITY_RESPONSE_FOLDERB + "\033[0m folder.");
     }
 
-    public void JwriteStudentStatusesB() throws IOException, Exception { // Write student statuses to file
+    public void JwriteStudentStatusesB() throws IOException { // Write student statuses to file
         FileWriter Jfw3B = new FileWriter(JProcessApplicationsB.JSTUDENT_STATUS_FILEB + ".md");
         PrintWriter Joutput3B = new PrintWriter(Jfw3B);
 
@@ -197,12 +203,16 @@ public class JProcessApplicationsB {
         Jfw3B.close();
 
         // Convert markdown file to PDF
-        Document JstudentStatusesB = new Document(JProcessApplicationsB.JSTUDENT_STATUS_FILEB + ".md");
-        JstudentStatusesB.save(JProcessApplicationsB.JSTUDENT_STATUS_FILEB, SaveFormat.PDF);
+        try {
+            Document JstudentStatusesB = new Document(JProcessApplicationsB.JSTUDENT_STATUS_FILEB + ".md");
+            JstudentStatusesB.save(JProcessApplicationsB.JSTUDENT_STATUS_FILEB, SaveFormat.PDF);
 
-        // Delete markdown file
-        File JfileB = new File(JProcessApplicationsB.JSTUDENT_STATUS_FILEB + ".md");
-        JfileB.delete();
+            // Delete markdown file
+            File JfileB = new File(JProcessApplicationsB.JSTUDENT_STATUS_FILEB + ".md");
+            JfileB.delete();
+        } catch (Exception e) {
+            System.out.println("Error converting student statuses to PDF.");
+        }
 
 
         // Notify user that student statuses have been written to the selected file
