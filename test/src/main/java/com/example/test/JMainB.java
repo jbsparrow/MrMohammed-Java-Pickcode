@@ -3,7 +3,7 @@ package com.example.test;
 import java.io.IOException;
 
 class JMainB {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, Exception {
 		JGradeCollectorB J_GradeCollector_B = new JGradeCollectorB(); // Create new instance of JGradeCollector and collect student data
 		J_GradeCollector_B.JwriteStudentDataB();
 		JFileReaderB J_FileReader_B = new JFileReaderB(JGradeCollectorB.JSTUDENT_DATA_FILEB);
