@@ -5,8 +5,8 @@ import java.io.IOException;
 class JMainB {
 	public static void main(String[] args) throws IOException {
 		JGradeCollectorB J_GradeCollector_B = new JGradeCollectorB(); // Create new instance of JGradeCollector and collect student data
-		J_GradeCollector_B.JwriteStudentDataB();
-		JFileReaderB J_FileReader_B = new JFileReaderB(JGradeCollectorB.JSTUDENT_DATA_FILEB);
+		J_GradeCollector_B.JwriteStudentDataB(); // Write student data to file
+		JFileReaderB J_FileReader_B = new JFileReaderB(JGradeCollectorB.JSTUDENT_DATA_FILEB); // Create new instance of JFileReader and pass student data file
 
 		J_GradeCollector_B.JcollectCutoffB(); // Collect cutoff for program
 
