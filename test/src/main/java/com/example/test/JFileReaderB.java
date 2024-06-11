@@ -32,7 +32,7 @@ public class JFileReaderB {
         for (String JlineB : JlinesB) {
             String[] JdataB = JlineB.split(":");
             String JnameB = JdataB[0];
-            Scanner JinputB = new Scanner(System.in);
+            Scanner JinputB = new Scanner(JdataB[1]);
             Integer[] JgradesB = new Integer[6];
             // Use scanner to read in grades
             for (int JiB = 0; JiB < 6; JiB++) {

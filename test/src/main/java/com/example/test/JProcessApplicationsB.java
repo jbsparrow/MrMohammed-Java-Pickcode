@@ -13,11 +13,10 @@ import java.util.Random;
 
 public class JProcessApplicationsB {
     // Define static variables
-    private static final String JSTUDENT_AVERAGE_FILEB = "./JPCI.txt"; // File to write student averages to - plain text
     private static final String JSTUDENT_STATUS_FILEB = "./OUAC.md"; // File to write acceptance statuses to - markdown format
     private static final String JUNIVERSITY_RESPONSE_FOLDERB = "./University Responses/"; // Folder to write university responses to - responses are written to markdown files
-    private static final String JSORT_METHODB = "ALPHABETICAL"; // "AVERAGE" or "ALPHABETICAL"
-    private static final String JSORT_ORDERB = "ASCENDING"; // "ASCENDING" or "DESCENDING"
+    private static final String JSORT_METHODB = "AVERAGE"; // "AVERAGE" or "ALPHABETICAL"
+    private static final String JSORT_ORDERB = "DESCENDING"; // "ASCENDING" or "DESCENDING"
     private static final String[] JUNIVERSITY_PROGRAMSB = { // Programs to offer admission to
         "Computer Science (Honours)",
         "Software Engineering (Co-op)",
@@ -100,34 +99,6 @@ public class JProcessApplicationsB {
         }
     }
 
-    public void JwriteStudentAveragesB() throws IOException { // Write student averages to file
-        FileWriter JfwB = new FileWriter(JProcessApplicationsB.JSTUDENT_AVERAGE_FILEB);
-        PrintWriter JoutputB = new PrintWriter(JfwB);
-
-        switch (JProcessApplicationsB.JSORT_METHODB) { // Write student averages based on the selected sort method
-            case "AVERAGE":
-                for (Integer JgradeB : this.JstudentGradesB) {
-                    JoutputB.println(this.JinvertedStudentDataAveragesB.get(JgradeB) + ": " + JgradeB);
-                }
-                break;
-
-            case "ALPHABETICAL":
-                for (String JnameB : this.JstudentNamesB) {
-                    JoutputB.println(JnameB + ": " + this.JstudentDataAveragesB.get(JnameB));
-                }
-                break;
-
-            default: // Exit if an invalid sort method is selected
-                System.out.println("Invalid sort method. Please enter 'AVERAGE' or 'ALPHABETICAL'.");
-                System.exit(1);
-        }
-
-        JoutputB.close();
-        JfwB.close();
-
-        // Notify user that student averages have been written to the selected file
-        System.out.println("Student averages have been written to \033[3m" + JProcessApplicationsB.JSTUDENT_AVERAGE_FILEB + "\033[0m.");
-    }
 
     public void JwriteUniversityResponsesB() throws IOException { // Write university responses to files
         for (Map.Entry<String, Integer> JentryB : this.JstudentDataAveragesB.entrySet()) { // Iterate through student averages
@@ -194,8 +165,23 @@ public class JProcessApplicationsB {
         // Write markdown table headers
         Joutput3B.println("| Student Name | Status |");
         Joutput3B.println("|--------------|--------|");
-        for (String JstudentB : this.JstudentNamesB) { //  Write statuses to the markdown table in the sort order of the student name file.
-            Joutput3B.println("| " + JstudentB + " | " + this.JstudentStatusesB.get(JstudentB) + " |");
+        // Sort baed on selected sort method
+        switch (JProcessApplicationsB.JSORT_METHODB) {
+            case "ALPHABETICAL":
+                for (String JstudentB : this.JstudentNamesB) {
+                    Joutput3B.println("| " + JstudentB + " | " + this.JstudentStatusesB.get(JstudentB) + " |");
+                }
+                break;
+
+            case "AVERAGE":
+                for (Integer JstudentGradesB : this.JstudentGradesB) {
+                    Joutput3B.println("| " + this.JinvertedStudentDataAveragesB.get(JstudentGradesB) + " | " + this.JstudentStatusesB.get(this.JinvertedStudentDataAveragesB.get(JstudentGradesB)) + " |");
+                }
+                break;
+
+            default:
+                System.out.println("Invalid sort method. Please enter 'ALPHABETICAL' or 'AVERAGE'.");
+                System.exit(1);
         }
 
         Joutput3B.close();
